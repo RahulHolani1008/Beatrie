@@ -30,6 +30,23 @@
 
       <v-stepper-step step="4">Install the customizer</v-stepper-step>
       <v-stepper-content step="4">
+        <v-row>
+          <v-text-field
+            label="Website name"
+            v-model="website.name"
+            outlined
+            class="rounded-lg"
+            type="text"
+          ></v-text-field>
+        </v-row>
+        <v-row>
+          <v-textarea
+            outlined
+            class="rounded-lg"
+            label="Website description"
+            v-model="website.description"
+          ></v-textarea>
+        </v-row>
         <v-btn
           color="primary"
           depressed
@@ -57,7 +74,11 @@ export default {
     e6: 1,
     customization: null,
     functionalities: null,
-    types: null
+    types: null,
+    website: {
+      name: null,
+      description: null
+    }
   }),
 
   methods: {
