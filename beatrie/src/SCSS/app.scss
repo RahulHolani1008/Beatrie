@@ -1,0 +1,18 @@
+@import 'fonts.scss';
+@import 'buttons.scss';
+
+.position-absolute {
+    position: absolute;
+}
+
+.top-right {
+    background-image: url('/assets/TopRight.png');
+}
+
+.full-width {
+    width: inherit;
+}
+
+.bottom-4 {
+    bottom: 16px;
+}
