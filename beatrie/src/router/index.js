@@ -12,8 +12,13 @@ const routes = [
   },
   {
     path: '/builder',
-    name: '',
+    name: 'Builder',
     component: () => import('../views/Builder.vue')
+  },
+  {
+    path: '/createWebPages',
+    name: 'Dragger',
+    component: () => import('../views/CreateWebPages.vue')
   }
   // {
   //   path: '/',

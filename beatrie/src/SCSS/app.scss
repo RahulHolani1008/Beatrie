@@ -9,8 +9,24 @@
     background-image: url('/assets/TopRight.png');
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .full-width {
     width: inherit;
+}
+
+.window-width {
+    width: 100vw;
+}
+
+.full-height {
+    height: inherit;
+}
+
+.window-height {
+    height: 100vh
 }
 
 .bottom-4 {
