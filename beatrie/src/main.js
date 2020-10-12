@@ -6,7 +6,7 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import VueDraggableResizable from 'vue-draggable-resizable';
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css';
-import '@mdi/font/css/materialdesignicons.css'
+// import '@mdi/font/css/materialdesignicons.css'
 
 Vue.component('vue-draggable-resizable', VueDraggableResizable);
 

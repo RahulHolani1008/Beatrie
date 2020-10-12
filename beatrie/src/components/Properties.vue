@@ -2,7 +2,7 @@
   <v-navigation-drawer v-model="isOpen" absolute temporary right>
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title>{{name}}</v-list-item-title>
+        <v-list-item-title>{{ name }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 
@@ -10,7 +10,7 @@
 
     <v-list dense>
       <v-list-item>
-        <v-list-item-content v-if="name=='TextField'">
+        <v-list-item-content v-if="name == 'TextField'">
           <v-text-field
             label="Label"
             v-model="component.title"
@@ -35,6 +35,31 @@
             :items="textfieldTypes"
           />
         </v-list-item-content>
+        <v-list-item-content v-if="name == 'TextArea'">
+          <v-text-field
+            label="Label"
+            v-model="component.title"
+            outlined
+            class="rounded-lg"
+            type="text"
+          />
+
+          <v-text-field
+            label="Placeholder"
+            v-model="component.placeholder"
+            outlined
+            class="rounded-lg"
+            type="text"
+          />
+
+          <!-- <v-select
+            label="Type"
+            v-model="component.type"
+            outlined
+            class="rounded-lg"
+            :items="textfieldTypes"
+          /> -->
+        </v-list-item-content>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -44,34 +69,34 @@
 export default {
   props: {
     drawer: {
-      default: false
+      default: false,
     },
     name: {
-      default: null
+      default: null,
     },
     component: {
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   data: () => ({
-    textfieldTypes: ["text", "password", "email"]
+    textfieldTypes: ["text", "password", "email"],
   }),
   computed: {
     isOpen: {
-      get: function() {
+      get: function () {
         return this.drawer;
       },
-      set: function(value) {
+      set: function (value) {
         if (!value) {
           this.$emit("close", this.component);
         }
-      }
-    }
+      },
+    },
   },
   watch: {
-    component: function(newVal) {
+    component: function (newVal) {
       this.$emit("component", this.component);
-    }
-  }
+    },
+  },
 };
 </script>

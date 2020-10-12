@@ -2,12 +2,12 @@
   <div class="window-height">
     <vue-draggable-resizable
       v-for="(textfield, n) in componentData.textfields"
-      :key="'textfield'+n"
+      :key="'textfield' + n"
       :w="textfield.width"
       :h="textfield.height"
-      :grid="[12,12]"
-      @dragging="onDrag('textfields',n)"
-      @resizing="onResize('textfields',n)"
+      :grid="[12, 12]"
+      @dragging="onDrag('textfields', n)"
+      @resizing="onResize('textfields', n)"
       :parent="true"
     >
       <v-text-field
@@ -21,12 +21,12 @@
     </vue-draggable-resizable>
     <vue-draggable-resizable
       v-for="(textarea, n) in componentData.textareas"
-      :key="'textarea'+n"
+      :key="'textarea' + n"
       :w="textarea.width"
       :h="textarea.height"
-      :grid="[12,12]"
-      @dragging="onDrag('textareas',n)"
-      @resizing="onResize('textareas',n)"
+      :grid="[12, 12]"
+      @dragging="onDrag('textareas', n)"
+      @resizing="onResize('textareas', n)"
       :parent="true"
     >
       <v-textarea
@@ -39,12 +39,12 @@
     </vue-draggable-resizable>
     <vue-draggable-resizable
       v-for="(select, n) in componentData.selects"
-      :key="'select'+n"
+      :key="'select' + n"
       :w="select.width"
       :h="select.height"
-      :grid="[12,12]"
-      @dragging="onDrag('selects',n)"
-      @resizing="onResize('selects',n)"
+      :grid="[12, 12]"
+      @dragging="onDrag('selects', n)"
+      @resizing="onResize('selects', n)"
       :parent="true"
     >
       <v-select
@@ -63,21 +63,21 @@ import VueDraggableResizable from "vue-draggable-resizable";
 export default {
   data: () => ({
     components: { textfields: [], selects: [], textareas: [] },
-    lastEmitted: { index: null, name: null }
+    lastEmitted: { index: null, name: null },
   }),
   props: {
     textfields: {
-      default: 0
+      default: 0,
     },
     textareas: {
-      default: 0
+      default: 0,
     },
     selects: {
-      default: 0
+      default: 0,
     },
     component: {
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   methods: {
     onResize(component, index, x, y, width, height) {
@@ -114,7 +114,7 @@ export default {
           break;
       }
     },
-    onDrag: function(component, index, x, y) {
+    onDrag: function (component, index, x, y) {
       switch (component) {
         case "textfields":
           this.componentData.textfields[index] = {
@@ -123,7 +123,7 @@ export default {
             height: this.componentData.textfields[index].height,
             width: this.componentData.textfields[index].width,
             x: x,
-            y: y
+            y: y,
           };
           break;
         case "textareas":
@@ -133,7 +133,7 @@ export default {
             height: this.componentData.textareas[index].height,
             width: this.componentData.textareas[index].width,
             x: x,
-            y: y
+            y: y,
           };
           break;
         case "selects":
@@ -143,7 +143,7 @@ export default {
             height: this.componentData.selects[index].height,
             width: this.componentData.selects[index].width,
             x: x,
-            y: y
+            y: y,
           };
           break;
       }
@@ -158,8 +158,17 @@ export default {
             this.componentData.textfields[index]
           );
           this.lastEmitted = { index: index, name: "textfield" };
+          break;
+        case "textarea":
+          this.$emit(
+            "openProperties",
+            "TextArea",
+            this.componentData.textareas[index]
+          );
+          this.lastEmitted = { index: index, name: "textarea" };
+          break;
       }
-    }
+    },
   },
   computed: {
     componentData: {
@@ -168,19 +177,18 @@ export default {
       },
       set(value) {
         this.components = value;
-      }
-    }
+      },
+    },
   },
   watch: {
-    component: function(newVal) {
+    component: function (newVal) {
       console.log(newVal);
-      switch (this.lastEmitted.name) {
-        case "textfield":
-          this.componentData.textfields.push("yes");
-          this.componentData.textfields.pop();
-      }
+      this.componentData.textfields.push("");
+      this.componentData.textfields.pop();
+      this.componentData.textareas.push("");
+      this.componentData.textareas.pop();
     },
-    textfields: function(newVal) {
+    textfields: function (newVal) {
       for (let index = 0; index < this.textfields; index += 1) {
         if (this.components.textfields.length <= index) {
           this.components.textfields.push({
@@ -190,12 +198,12 @@ export default {
             height: 65,
             width: 200,
             x: 150,
-            y: 150
+            y: 150,
           });
         }
       }
     },
-    textareas: function(newVal) {
+    textareas: function (newVal) {
       for (let index = 0; index < this.textareas; index += 1) {
         if (this.components.textareas.length <= index) {
           this.components.textareas.push({
@@ -204,12 +212,12 @@ export default {
             height: 150,
             width: 200,
             x: 150,
-            y: 150
+            y: 150,
           });
         }
       }
     },
-    selects: function(newVal) {
+    selects: function (newVal) {
       for (let index = 0; index < this.selects; index += 1) {
         if (this.components.selects.length <= index) {
           this.components.selects.push({
@@ -218,11 +226,11 @@ export default {
             height: 65,
             width: 200,
             x: 150,
-            y: 150
+            y: 150,
           });
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
