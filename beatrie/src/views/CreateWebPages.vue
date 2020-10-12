@@ -13,12 +13,19 @@
               :textareas="textareas"
               :selects="selects"
               @openProperties="openProperties"
+              :component="component"
             />
           </transition>
         </v-col>
       </v-row>
     </v-container>
-    <Properties :drawer="drawer" :name="name" :component="component" />
+    <Properties
+      :drawer="drawer"
+      :name="name"
+      :component="component"
+      @close="closeDrawer"
+      @component="getComponentData"
+    />
   </v-row>
 </template>
 <script>
@@ -32,7 +39,7 @@ export default {
     textareas: 0,
     selects: 0,
     name: null,
-    component: null,
+    component: {},
     drawer: false
   }),
   components: {
@@ -42,6 +49,7 @@ export default {
   },
   methods: {
     openProperties(name, component) {
+      console.log(name, component);
       this.name = name;
       this.component = component;
       this.drawer = true;
@@ -58,6 +66,14 @@ export default {
           this.selects += 1;
           break;
       }
+    },
+    closeDrawer(component) {
+      this.drawer = false;
+      this.component = component;
+    },
+    getComponentData(component) {
+      console.log(component);
+      this.component = component;
     }
   }
 };

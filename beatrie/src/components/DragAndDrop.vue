@@ -13,6 +13,7 @@
       <v-text-field
         @contextmenu.native="editProperties('textfield', n, $event)"
         outlined
+        :type="textfield.type"
         :label="textfield.title"
         :placeholder="textfield.placeholder"
         class="rounded-lg"
@@ -60,7 +61,10 @@
 <script>
 import VueDraggableResizable from "vue-draggable-resizable";
 export default {
-  data: () => ({ components: { textfields: [], selects: [], textareas: [] } }),
+  data: () => ({
+    components: { textfields: [], selects: [], textareas: [] },
+    lastEmitted: { index: null, name: null }
+  }),
   props: {
     textfields: {
       default: 0
@@ -70,6 +74,9 @@ export default {
     },
     selects: {
       default: 0
+    },
+    component: {
+      default: () => ({})
     }
   },
   methods: {
@@ -150,6 +157,7 @@ export default {
             "TextField",
             this.componentData.textfields[index]
           );
+          this.lastEmitted = { index: index, name: "textfield" };
       }
     }
   },
@@ -164,12 +172,21 @@ export default {
     }
   },
   watch: {
+    component: function(newVal) {
+      console.log(newVal);
+      switch (this.lastEmitted.name) {
+        case "textfield":
+          this.componentData.textfields.push("yes");
+          this.componentData.textfields.pop();
+      }
+    },
     textfields: function(newVal) {
       for (let index = 0; index < this.textfields; index += 1) {
         if (this.components.textfields.length <= index) {
           this.components.textfields.push({
             title: "",
             placeholder: "",
+            type: "text",
             height: 65,
             width: 200,
             x: 150,

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" absolute temporary right>
+  <v-navigation-drawer v-model="isOpen" absolute temporary right>
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title>{{name}}</v-list-item-title>
@@ -9,9 +9,31 @@
     <v-divider></v-divider>
 
     <v-list dense>
-      <v-list-item v-for="property in component" :key="property.title">
-        <v-list-item-content>
-          <v-list-item-title>{{ property.title }}</v-list-item-title>
+      <v-list-item>
+        <v-list-item-content v-if="name=='TextField'">
+          <v-text-field
+            label="Label"
+            v-model="component.title"
+            outlined
+            class="rounded-lg"
+            type="text"
+          />
+
+          <v-text-field
+            label="Placeholder"
+            v-model="component.placeholder"
+            outlined
+            class="rounded-lg"
+            type="text"
+          />
+
+          <v-select
+            label="Type"
+            v-model="component.type"
+            outlined
+            class="rounded-lg"
+            :items="textfieldTypes"
+          />
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -28,7 +50,27 @@ export default {
       default: null
     },
     component: {
-      default: null
+      default: () => ({})
+    }
+  },
+  data: () => ({
+    textfieldTypes: ["text", "password", "email"]
+  }),
+  computed: {
+    isOpen: {
+      get: function() {
+        return this.drawer;
+      },
+      set: function(value) {
+        if (!value) {
+          this.$emit("close", this.component);
+        }
+      }
+    }
+  },
+  watch: {
+    component: function(newVal) {
+      this.$emit("component", this.component);
     }
   }
 };
