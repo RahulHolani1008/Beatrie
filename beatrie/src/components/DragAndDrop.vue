@@ -147,7 +147,7 @@ export default {
         case "textfield":
           this.$emit(
             "openProperties",
-            "textfield",
+            "TextField",
             this.componentData.textfields[index]
           );
       }
