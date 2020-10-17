@@ -9,6 +9,9 @@
               :textfields="textfields"
               :textareas="textareas"
               :selects="selects"
+              :buttons="buttons"
+              :radiobuttons="radiobuttons"
+              :checkboxes="checkboxes"
               @openProperties="openProperties"
               :component="component"
             />
@@ -35,10 +38,12 @@ export default {
     textfields: 0,
     textareas: 0,
     selects: 0,
+    buttons: 0,
+    radiobuttons: 0,
+    checkboxes: 0,
     name: null,
     component: {},
-    drawer: false,
-    buttons: 0
+    drawer: false
   }),
   components: {
     Components,
@@ -65,6 +70,12 @@ export default {
           break;
         case "Button":
           this.buttons += 1;
+          break;
+        case "CheckBox":
+          this.checkboxes += 1;
+          break;
+        case "RadioButton":
+          this.radiobuttons += 1;
           break;
       }
     },

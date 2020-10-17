@@ -36,7 +36,7 @@
         outlined
         :label="textarea.title"
         :placeholder="textarea.placeholder"
-        class="rounded-lg"
+        :style="'border-radius: '+textarea.borderRadius"
       />
     </vue-draggable-resizable>
     <vue-draggable-resizable
@@ -51,12 +51,39 @@
     >
       <v-select
         @contextmenu.native="editProperties('select', n, $event)"
-        outlined
+        :outlined="select.outlined"
+        :filled="select.filled"
+        :solo="select.solo"
         :label="select.title"
         :placeholder="select.placeholder"
-        class="rounded-lg"
         :items="select.values"
+        :style="'border-radius: '+select.borderRadius"
       />
+    </vue-draggable-resizable>
+    <vue-draggable-resizable
+      v-for="(button, n) in componentData.buttons"
+      :key="'button' + n"
+      :w="button.width"
+      :h="button.height"
+      :grid="[12, 12]"
+      @dragging="onDrag('buttons', n)"
+      @resizing="onResize('buttons', n)"
+      :parent="true"
+    >
+      <v-btn
+        @contextmenu.native="editProperties('button', n, $event)"
+        :style="'border-radius: '+button.borderRadius"
+        class="rounded-lg"
+        :depressed="button.depressed"
+        :outlined="button.outlined"
+        :text="button.text"
+        :color="button.color"
+        @click="onButtonClick(button)"
+      >
+        <v-icon dark>{{button.prependIcon}}</v-icon>
+        {{button.title}}
+        <v-icon dark>{{button.appendIcon}}</v-icon>
+      </v-btn>
     </vue-draggable-resizable>
   </div>
 </template>
@@ -65,7 +92,14 @@
 import VueDraggableResizable from "vue-draggable-resizable";
 export default {
   data: () => ({
-    components: { textfields: [], selects: [], textareas: [] },
+    components: {
+      textfields: [],
+      selects: [],
+      textareas: [],
+      buttons: [],
+      radiobuttons: [],
+      checkboxes: []
+    },
     lastEmitted: { index: null, name: null }
   }),
   props: {
@@ -76,6 +110,15 @@ export default {
       default: 0
     },
     selects: {
+      default: 0
+    },
+    buttons: {
+      default: 0
+    },
+    radiobuttons: {
+      default: 0
+    },
+    checkboxes: {
       default: 0
     },
     component: {
@@ -115,6 +158,16 @@ export default {
             }
           });
           break;
+        case "buttons":
+          this.componentData.buttons.forEach((select, n) => {
+            if (n === index) {
+              this.componentData.buttons[index].height = height;
+              this.componentData.buttons[index].width = width;
+              this.componentData.buttons[index].x = x;
+              this.componentData.buttons[index].y = y;
+            }
+          });
+          break;
       }
     },
     onDrag: function(component, index, x, y) {
@@ -126,7 +179,11 @@ export default {
             height: this.componentData.textfields[index].height,
             width: this.componentData.textfields[index].width,
             x: x,
-            y: y
+            y: y,
+            outlined: this.componentData.textfields[index].outlined,
+            filled: this.componentData.textfields[index].filled,
+            solo: this.componentData.textfields[index].solo,
+            borderRadius: this.componentData.textfields[index].borderRadius
           };
           break;
         case "textareas":
@@ -136,7 +193,11 @@ export default {
             height: this.componentData.textareas[index].height,
             width: this.componentData.textareas[index].width,
             x: x,
-            y: y
+            y: y,
+            outlined: this.componentData.textareas[index].outlined,
+            filled: this.componentData.textareas[index].filled,
+            solo: this.componentData.textareas[index].solo,
+            borderRadius: this.componentData.textareas[index].borderRadius
           };
           break;
         case "selects":
@@ -146,7 +207,27 @@ export default {
             height: this.componentData.selects[index].height,
             width: this.componentData.selects[index].width,
             x: x,
-            y: y
+            y: y,
+            values: this.componentData.selects[index].values,
+            outlined: this.componentData.selects[index].outlined,
+            filled: this.componentData.selects[index].filled,
+            solo: this.componentData.selects[index].solo,
+            borderRadius: this.componentData.selects[index].borderRadius
+          };
+          break;
+        case "buttons":
+          this.componentData.buttons[index] = {
+            height: this.componentData.selects[index].height,
+            width: this.componentData.selects[index].width,
+            x: x,
+            y: y,
+            borderRadius: this.componentData.selects[index].borderRadius,
+            depressed: this.componentData.selects[index].depressed,
+            outlined: this.componentData.selects[index].outlined,
+            text: this.componentData.selects[index].text,
+            color: this.componentData.selects[index].color,
+            prependIcon: this.componentData.selects[index].prependIcon,
+            appendIcon: this.componentData.selects[index].appendIcon
           };
           break;
       }
@@ -177,6 +258,14 @@ export default {
             this.componentData.selects[index]
           );
           this.lastEmitted = { index: index, name: "select" };
+          break;
+        case "button":
+          this.$emit(
+            "openProperties",
+            "Button",
+            this.componentData.buttons[index]
+          );
+          this.lastEmitted = { index: index, name: "button" };
           break;
       }
     }
@@ -217,6 +306,13 @@ export default {
           this.componentData.selects = [];
           this.componentData.selects.push(...temp);
           break;
+        case "button":
+          temp = this.componentData.buttons.filter(button => {
+            return button;
+          });
+          this.componentData.buttons = [];
+          this.componentData.buttons.push(...temp);
+          break;
       }
     },
     textfields: function(newVal) {
@@ -253,7 +349,7 @@ export default {
       }
     },
     selects: function(newVal) {
-      for (let index = 0; index < this.selects; index += 1) {
+      for (let index = 1; index <= this.selects; index += 1) {
         if (this.components.selects.length <= index) {
           this.components.selects.push({
             title: "",
@@ -262,7 +358,32 @@ export default {
             width: 200,
             x: 150,
             y: 150,
-            values: []
+            values: [],
+            outlined: true,
+            filled: false,
+            solo: false,
+            borderRadius: "15px"
+          });
+        }
+      }
+    },
+    buttons: function(newVal) {
+      for (let index = 1; index <= this.buttons; index += 1) {
+        if (this.components.buttons.length <= index) {
+          this.components.buttons.push({
+            title: "",
+            placeholder: "",
+            height: 65,
+            width: 200,
+            x: 150,
+            y: 150,
+            borderRadius: "15px",
+            depressed: true,
+            outlined: false,
+            text: false,
+            color: "error",
+            prependIcon: "",
+            appendIcon: ""
           });
         }
       }

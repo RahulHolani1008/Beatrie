@@ -211,6 +211,8 @@ export default {
       set: function(value) {
         if (!value) {
           this.$emit("close", this.component);
+          this.value = "";
+          this.component = {};
         }
       }
     }
