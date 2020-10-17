@@ -1,11 +1,11 @@
 <template>
-  <div class="window-height">
+  <div class="window-height" id="container-div">
     <vue-draggable-resizable
       v-for="(textfield, n) in componentData.textfields"
       :key="'textfield' + n"
       :w="textfield.width"
       :h="textfield.height"
-      :grid="[12, 12]"
+      :grid="[gridY, gridX]"
       @dragging="onDrag('textfields', n)"
       @resizing="onResize('textfields', n)"
       :parent="true"
@@ -26,7 +26,7 @@
       :key="'textarea' + n"
       :w="textarea.width"
       :h="textarea.height"
-      :grid="[12, 12]"
+      :grid="[gridY, gridX]"
       @dragging="onDrag('textareas', n)"
       @resizing="onResize('textareas', n)"
       :parent="true"
@@ -44,7 +44,7 @@
       :key="'select' + n"
       :w="select.width"
       :h="select.height"
-      :grid="[12, 12]"
+      :grid="[gridY, gridX]"
       @dragging="onDrag('selects', n)"
       @resizing="onResize('selects', n)"
       :parent="true"
@@ -65,7 +65,7 @@
       :key="'button' + n"
       :w="button.width"
       :h="button.height"
-      :grid="[12, 12]"
+      :grid="[gridY, gridX]"
       @dragging="onDrag('buttons', n)"
       @resizing="onResize('buttons', n)"
       :parent="true"
@@ -73,7 +73,6 @@
       <v-btn
         @contextmenu.native="editProperties('button', n, $event)"
         :style="'border-radius: '+button.borderRadius"
-        class="rounded-lg"
         :depressed="button.depressed"
         :outlined="button.outlined"
         :text="button.text"
@@ -98,7 +97,9 @@ export default {
       textareas: [],
       buttons: [],
       radiobuttons: [],
-      checkboxes: []
+      checkboxes: [],
+      gridX: 10,
+      gridY: 10
     },
     lastEmitted: { index: null, name: null }
   }),
@@ -280,6 +281,11 @@ export default {
       }
     }
   },
+  mounted() {
+    const container = document.getElementById("container-div");
+    this.gridY = container.offsetHeight / 10;
+    this.gridX = container.offsetWidth / 12;
+  },
   watch: {
     component: function(newVal) {
       console.log(newVal);
@@ -374,7 +380,7 @@ export default {
             title: "",
             placeholder: "",
             height: 65,
-            width: 200,
+            width: 100,
             x: 150,
             y: 150,
             borderRadius: "15px",

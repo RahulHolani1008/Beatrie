@@ -96,6 +96,72 @@
             class="rounded-lg my-2"
             type="text"
           />
+          <v-select
+            v-model="component.prependIcon"
+            outlined
+            hide-details
+            class="rounded-lg my-2"
+            :items="icons"
+            label="Prepend Icon"
+          >
+            <template v-slot:selection="{ item }">
+              <v-icon>{{ item }}</v-icon>
+            </template>
+            <template slot="selection" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+            <template slot="item" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+          </v-select>
+          <v-select
+            v-model="component.appendIcon"
+            outlined
+            hide-details
+            class="rounded-lg my-2"
+            :items="icons"
+            label="Append Icon"
+          >
+            <template v-slot:selection="{ item }">
+              <v-icon>{{ item }}</v-icon>
+              <v-icon>{{clear}}</v-icon>
+            </template>
+            <template slot="selection" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+            <template slot="item" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+          </v-select>
+          <v-checkbox
+            color="primary"
+            class="col-6"
+            hide-details
+            v-model="component.outlined"
+            label="Outlined"
+          ></v-checkbox>
+          <v-checkbox
+            color="primary"
+            class="col-6"
+            hide-details
+            v-model="component.depressed"
+            label="Depressed"
+          ></v-checkbox>
+          <v-checkbox
+            color="primary"
+            class="col-6"
+            hide-details
+            v-model="component.text"
+            label="Text"
+          ></v-checkbox>
+          <v-text-field
+            color="primary"
+            class="col-12 my-2 rounded-lg"
+            outlined
+            hide-details
+            v-model="component.borderRadius"
+            label="Border Radius"
+          ></v-text-field>
         </v-list-item-content>
         <v-list-item-content v-if="name == 'Select'">
           <v-text-field
@@ -189,8 +255,37 @@ export default {
     }
   },
   data: () => ({
-    textfieldTypes: ["text", "password", "email"],
-    value: ""
+    textfieldTypes: ["text", "password", "email", "number"],
+    value: "",
+    icons: [
+      "account_circle",
+      "add_shopping_cart",
+      "add_task",
+      "arrow_circle_down",
+      "arrow_circle_up",
+      "arrow_right_alt",
+      "bookmark_border",
+      "delete_outline",
+      "cached",
+      "done",
+      "event",
+      "favorite",
+      "get_app",
+      "launch",
+      "clear",
+      "perm_identity",
+      "perm_phone_msg",
+      "schedule",
+      "search",
+      "shopping_cart",
+      "stars",
+      "work_outline",
+      "visibility",
+      "visibility_off",
+      "upgrade",
+      "trending_up",
+      "trending_down"
+    ]
   }),
   methods: {
     insertValue() {
@@ -215,6 +310,9 @@ export default {
           this.component = {};
         }
       }
+    },
+    icon() {
+      return "mdi-checkbox-blank-outline";
     }
   },
   watch: {
