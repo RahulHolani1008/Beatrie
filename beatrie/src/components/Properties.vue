@@ -125,6 +125,7 @@
             hide-details
             append-icon="add_circle_outline"
             @click:append="insertValue"
+            v-on:keyup.enter="insertValue"
           />
           <v-list shaped dense>
             <v-subheader>Values</v-subheader>
