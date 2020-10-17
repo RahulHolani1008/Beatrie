@@ -12,11 +12,13 @@
     >
       <v-text-field
         @contextmenu.native="editProperties('textfield', n, $event)"
-        outlined
+        :outlined="textfield.outlined"
+        :filled="textfield.filled"
+        :solo="textfield.solo"
         :type="textfield.type"
         :label="textfield.title"
         :placeholder="textfield.placeholder"
-        class="rounded-lg"
+        :style="'border-radius: '+textfield.borderRadius"
       />
     </vue-draggable-resizable>
     <vue-draggable-resizable
@@ -53,6 +55,7 @@
         :label="select.title"
         :placeholder="select.placeholder"
         class="rounded-lg"
+        :items="select.values"
       />
     </vue-draggable-resizable>
   </div>
@@ -63,21 +66,21 @@ import VueDraggableResizable from "vue-draggable-resizable";
 export default {
   data: () => ({
     components: { textfields: [], selects: [], textareas: [] },
-    lastEmitted: { index: null, name: null },
+    lastEmitted: { index: null, name: null }
   }),
   props: {
     textfields: {
-      default: 0,
+      default: 0
     },
     textareas: {
-      default: 0,
+      default: 0
     },
     selects: {
-      default: 0,
+      default: 0
     },
     component: {
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   methods: {
     onResize(component, index, x, y, width, height) {
@@ -114,7 +117,7 @@ export default {
           break;
       }
     },
-    onDrag: function (component, index, x, y) {
+    onDrag: function(component, index, x, y) {
       switch (component) {
         case "textfields":
           this.componentData.textfields[index] = {
@@ -123,7 +126,7 @@ export default {
             height: this.componentData.textfields[index].height,
             width: this.componentData.textfields[index].width,
             x: x,
-            y: y,
+            y: y
           };
           break;
         case "textareas":
@@ -133,7 +136,7 @@ export default {
             height: this.componentData.textareas[index].height,
             width: this.componentData.textareas[index].width,
             x: x,
-            y: y,
+            y: y
           };
           break;
         case "selects":
@@ -143,7 +146,7 @@ export default {
             height: this.componentData.selects[index].height,
             width: this.componentData.selects[index].width,
             x: x,
-            y: y,
+            y: y
           };
           break;
       }
@@ -167,8 +170,16 @@ export default {
           );
           this.lastEmitted = { index: index, name: "textarea" };
           break;
+        case "select":
+          this.$emit(
+            "openProperties",
+            "Select",
+            this.componentData.selects[index]
+          );
+          this.lastEmitted = { index: index, name: "select" };
+          break;
       }
-    },
+    }
   },
   computed: {
     componentData: {
@@ -177,33 +188,57 @@ export default {
       },
       set(value) {
         this.components = value;
-      },
-    },
+      }
+    }
   },
   watch: {
-    component: function (newVal) {
+    component: function(newVal) {
       console.log(newVal);
-      this.componentData.textfields.push("");
-      this.componentData.textfields.pop();
-      this.componentData.textareas.push("");
-      this.componentData.textareas.pop();
+      let temp;
+      switch (this.lastEmitted.name) {
+        case "textfield":
+          temp = this.componentData.textfields.filter(textfield => {
+            return textfield;
+          });
+          this.componentData.textfields = [];
+          this.componentData.textfields.push(...temp);
+          break;
+        case "textarea":
+          temp = this.componentData.textareas.filter(textarea => {
+            return textarea;
+          });
+          this.componentData.textareas = [];
+          this.componentData.textareas.push(...temp);
+          break;
+        case "select":
+          temp = this.componentData.selects.filter(select => {
+            return select;
+          });
+          this.componentData.selects = [];
+          this.componentData.selects.push(...temp);
+          break;
+      }
     },
-    textfields: function (newVal) {
+    textfields: function(newVal) {
       for (let index = 0; index < this.textfields; index += 1) {
         if (this.components.textfields.length <= index) {
           this.components.textfields.push({
-            title: "",
+            title: "Enter Title Here",
             placeholder: "",
             type: "text",
             height: 65,
             width: 200,
             x: 150,
             y: 150,
+            outlined: true,
+            filled: false,
+            solo: false,
+            borderRadius: "15px"
           });
         }
       }
     },
-    textareas: function (newVal) {
+    textareas: function(newVal) {
       for (let index = 0; index < this.textareas; index += 1) {
         if (this.components.textareas.length <= index) {
           this.components.textareas.push({
@@ -212,12 +247,12 @@ export default {
             height: 150,
             width: 200,
             x: 150,
-            y: 150,
+            y: 150
           });
         }
       }
     },
-    selects: function (newVal) {
+    selects: function(newVal) {
       for (let index = 0; index < this.selects; index += 1) {
         if (this.components.selects.length <= index) {
           this.components.selects.push({
@@ -227,10 +262,11 @@ export default {
             width: 200,
             x: 150,
             y: 150,
+            values: []
           });
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>

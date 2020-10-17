@@ -25,6 +25,10 @@
     height: inherit;
 }
 
+input[role=checkbox] {
+    opacity: 1 !important;
+}
+
 .window-height {
     height: 100vh
 }

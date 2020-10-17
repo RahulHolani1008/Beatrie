@@ -1,9 +1,6 @@
 <template>
   <v-row>
     <Components @add="add" class="col-3 window-height" />
-    <!-- <v-content>
-      <DragAndDrop :textfields="textfields" />
-    </v-content>-->
     <v-container fluid class="col-9">
       <v-row class="window-height">
         <v-col>
@@ -40,7 +37,8 @@ export default {
     selects: 0,
     name: null,
     component: {},
-    drawer: false
+    drawer: false,
+    buttons: 0
   }),
   components: {
     Components,
@@ -64,6 +62,9 @@ export default {
           break;
         case "Select":
           this.selects += 1;
+          break;
+        case "Button":
+          this.buttons += 1;
           break;
       }
     },
