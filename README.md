@@ -1,2 +1,2 @@
-# Betrie
+# Beatrie
 The Vue.js website builder
