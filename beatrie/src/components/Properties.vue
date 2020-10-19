@@ -37,6 +37,44 @@
             class="rounded-lg my-2"
             :items="textfieldTypes"
           />
+          <v-select
+            v-model="component.prependIcon"
+            outlined
+            hide-details
+            class="rounded-lg my-2 col-6 pr-1"
+            :items="icons"
+            label="Prepend Icon"
+          >
+            <template v-slot:selection="{ item }">
+              <v-icon>{{ item }}</v-icon>
+              <v-icon>{{ clear }}</v-icon>
+            </template>
+            <template slot="selection" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+            <template slot="item" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+          </v-select>
+          <v-select
+            v-model="component.appendIcon"
+            outlined
+            hide-details
+            class="rounded-lg pl-1 my-2 col-6"
+            :items="icons"
+            label="Append Icon"
+          >
+            <template v-slot:selection="{ item }">
+              <v-icon>{{ item }}</v-icon>
+              <v-icon>{{ clear }}</v-icon>
+            </template>
+            <template slot="selection" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+            <template slot="item" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+          </v-select>
           <HR />
           <v-checkbox
             color="primary"
@@ -100,7 +138,7 @@
             v-model="component.prependIcon"
             outlined
             hide-details
-            class="rounded-lg my-2"
+            class="rounded-lg my-2 col-6 pl-1"
             :items="icons"
             label="Prepend Icon"
           >
@@ -118,7 +156,7 @@
             v-model="component.appendIcon"
             outlined
             hide-details
-            class="rounded-lg my-2"
+            class="rounded-lg my-2 col-6 pr-1"
             :items="icons"
             label="Append Icon"
           >
@@ -131,6 +169,54 @@
             </template>
             <template slot="item" slot-scope="data">
               <v-icon>{{ data.item }}</v-icon>
+            </template>
+          </v-select>
+          <v-select
+            v-model="color1"
+            outlined
+            hide-details
+            class="rounded-lg my-2 col-6 pr-1"
+            :items="colors"
+            label="Color"
+          >
+            <template v-slot:selection="{ item }">
+              <v-icon>{{ item }}</v-icon>
+            </template>
+            <template slot="selection" slot-scope="data">
+              <v-btn
+                :dark="data.item != 'white' && data.item != 'transparent' && data.item != 'yellow'"
+                :color="data.item"
+              >{{ data.item }}</v-btn>
+            </template>
+            <template slot="item" slot-scope="data">
+              <v-btn
+                :dark="data.item != 'white' && data.item != 'transparent' && data.item != 'yellow'"
+                :color="data.item"
+              >{{ data.item }}</v-btn>
+            </template>
+          </v-select>
+          <v-select
+            v-model="color2"
+            outlined
+            hide-details
+            class="rounded-lg my-2 col-6 pr-1"
+            :items="coloraccent"
+            label="Color Accent"
+          >
+            <template v-slot:selection="{ item }">
+              <v-icon>{{ item }}</v-icon>
+            </template>
+            <template slot="selection" slot-scope="data">
+              <v-btn
+                :dark="color1 != 'white' && color1 != 'transparent' && data.item != 'lighten-5' && data.item != 'lighten-4'"
+                :color="color1+' '+data.item"
+              >{{ data.item }}</v-btn>
+            </template>
+            <template slot="item" slot-scope="data">
+              <v-btn
+                :dark="color1 != 'white' && color1 != 'transparent' && data.item != 'lighten-5'  && data.item != 'lighten-4'"
+                :color="color1+' '+data.item"
+              >{{ data.item }}</v-btn>
             </template>
           </v-select>
           <v-checkbox
@@ -152,7 +238,14 @@
             class="col-6"
             hide-details
             v-model="component.text"
-            label="Text"
+            label="Is Textual?"
+          ></v-checkbox>
+          <v-checkbox
+            color="primary"
+            class="col-6"
+            hide-details
+            v-model="component.dark"
+            label="Is Dark?"
           ></v-checkbox>
           <v-text-field
             color="primary"
@@ -206,6 +299,44 @@
               </v-list-item>
             </v-list-item-group>
           </v-list>
+          <v-select
+            v-model="component.prependIcon"
+            outlined
+            hide-details
+            class="rounded-lg my-2 col-6 pr-1"
+            :items="icons"
+            label="Prepend Icon"
+          >
+            <template v-slot:selection="{ item }">
+              <v-icon>{{ item }}</v-icon>
+              <v-icon>{{ clear }}</v-icon>
+            </template>
+            <template slot="selection" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+            <template slot="item" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+          </v-select>
+          <v-select
+            v-model="component.appendIcon"
+            outlined
+            hide-details
+            class="rounded-lg pl-1 my-2 col-6"
+            :items="icons"
+            label="Append Icon"
+          >
+            <template v-slot:selection="{ item }">
+              <v-icon>{{ item }}</v-icon>
+              <v-icon>{{ clear }}</v-icon>
+            </template>
+            <template slot="selection" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+            <template slot="item" slot-scope="data">
+              <v-icon>{{ data.item }}</v-icon>
+            </template>
+          </v-select>
           <HR />
           <v-checkbox
             color="primary"
@@ -285,7 +416,48 @@ export default {
       "upgrade",
       "trending_up",
       "trending_down"
-    ]
+    ],
+    colors: [
+      "red",
+      "pink",
+      "purple",
+      "deep-purple",
+      "indigo",
+      "blue",
+      "light-blue",
+      "cyan",
+      "teal",
+      "green",
+      "light-green",
+      "lime",
+      "yellow",
+      "amber",
+      "orange",
+      "deep-orange",
+      "brown",
+      "blue-grey",
+      "grey",
+      "black",
+      "white",
+      "transparent"
+    ],
+    coloraccent: [
+      "lighten-1",
+      "lighten-2",
+      "lighten-3",
+      "lighten-4",
+      "lighten-5",
+      "darken-1",
+      "darken-2",
+      "darken-3",
+      "darken-4",
+      "accent-1",
+      "accent-2",
+      "accent-3",
+      "accent-4"
+    ],
+    color1: "",
+    color2: ""
   }),
   methods: {
     insertValue() {
@@ -317,11 +489,21 @@ export default {
   },
   watch: {
     component: function(newVal) {
+      if (this.component.color) {
+        this.color1 = this.component.color.split(" ")[0];
+        this.color2 = this.component.color.split(" ")[1];
+      }
       this.$emit("component", this.component);
     },
     value: function(newVal) {
       this.component.values.pop();
       this.component.values.push(newVal);
+    },
+    color1: function(newVal) {
+      this.component.color = this.color1 + " " + this.color2;
+    },
+    color2: function(newVal) {
+      this.component.color = this.color1 + " " + this.color2;
     }
   }
 };

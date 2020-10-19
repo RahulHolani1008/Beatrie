@@ -19,6 +19,8 @@
         :label="textfield.title"
         :placeholder="textfield.placeholder"
         :style="'border-radius: '+textfield.borderRadius"
+        :append-icon="textfield.appendIcon"
+        :prepend-inner-icon="textfield.prependIcon"
       />
     </vue-draggable-resizable>
     <vue-draggable-resizable
@@ -57,6 +59,8 @@
         :label="select.title"
         :placeholder="select.placeholder"
         :items="select.values"
+        :append-icon="select.appendIcon"
+        :prepend-inner-icon="select.prependIcon"
         :style="'border-radius: '+select.borderRadius"
       />
     </vue-draggable-resizable>
@@ -78,10 +82,11 @@
         :text="button.text"
         :color="button.color"
         @click="onButtonClick(button)"
+        :dark="button.dark"
       >
-        <v-icon dark>{{button.prependIcon}}</v-icon>
+        <v-icon dark>{{button.prependIcon}}&nbsp;</v-icon>
         {{button.title}}
-        <v-icon dark>{{button.appendIcon}}</v-icon>
+        <v-icon dark>&nbsp;{{button.appendIcon}}</v-icon>
       </v-btn>
     </vue-draggable-resizable>
   </div>
@@ -181,10 +186,13 @@ export default {
             width: this.componentData.textfields[index].width,
             x: x,
             y: y,
+            prependIcon: this.componentData.textfields[index].prependIcon,
+            appendIcon: this.componentData.textfields[index].appendIcon,
             outlined: this.componentData.textfields[index].outlined,
             filled: this.componentData.textfields[index].filled,
             solo: this.componentData.textfields[index].solo,
-            borderRadius: this.componentData.textfields[index].borderRadius
+            borderRadius: this.componentData.textfields[index].borderRadius,
+            dark: this.componentData.textfields[index].dark
           };
           break;
         case "textareas":
@@ -213,7 +221,9 @@ export default {
             outlined: this.componentData.selects[index].outlined,
             filled: this.componentData.selects[index].filled,
             solo: this.componentData.selects[index].solo,
-            borderRadius: this.componentData.selects[index].borderRadius
+            borderRadius: this.componentData.selects[index].borderRadius,
+            prependIcon: this.componentData.selects[index].prependIcon,
+            appendIcon: this.componentData.selects[index].appendIcon
           };
           break;
         case "buttons":
@@ -335,7 +345,9 @@ export default {
             outlined: true,
             filled: false,
             solo: false,
-            borderRadius: "15px"
+            borderRadius: "15px",
+            prependIcon: "",
+            appendIcon: ""
           });
         }
       }
@@ -368,7 +380,9 @@ export default {
             outlined: true,
             filled: false,
             solo: false,
-            borderRadius: "15px"
+            borderRadius: "15px",
+            prependIcon: "",
+            appendIcon: ""
           });
         }
       }
@@ -377,19 +391,19 @@ export default {
       for (let index = 1; index <= this.buttons; index += 1) {
         if (this.components.buttons.length <= index) {
           this.components.buttons.push({
-            title: "",
-            placeholder: "",
+            title: "Click me!",
             height: 65,
-            width: 100,
+            width: 150,
             x: 150,
             y: 150,
             borderRadius: "15px",
             depressed: true,
             outlined: false,
             text: false,
-            color: "error",
+            color: "grey darken-4",
             prependIcon: "",
-            appendIcon: ""
+            appendIcon: "",
+            dark: true
           });
         }
       }
